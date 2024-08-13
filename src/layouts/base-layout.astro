@@ -17,11 +17,13 @@ type OpenGraph = {
   type: string;
 };
 
+const { origin } = Astro.url;
+
 const { title, description } = Astro.props;
 
 const openGraph: OpenGraph = {
-  url: "https://screen-snapper.vercel.app",
-  imageUrl: "/og.png",
+  url: origin,
+  imageUrl: `${origin}/og.png`,
   width: 1200,
   height: 630,
   type: "website",
