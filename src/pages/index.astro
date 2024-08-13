@@ -1,9 +1,12 @@
 ---
 import BaseLayout from "@layouts/base-layout.astro";
 import RecordNowButton from "@components/record-now-button.astro";
+
+const title = "ScreenSnapper";
+const description = "The online tool to record your screen";
 ---
 
-<BaseLayout pageTitle="ScreenSnapper">
+<BaseLayout title={title} description={description}>
   <section class="h-[calc(100vh-3rem)] flex items-center justify-center">
     <div class="text-center">
       <h1 class="text-yellow-400 text-5xl md:text-8xl font-medium">

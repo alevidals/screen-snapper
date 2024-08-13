@@ -2,11 +2,15 @@
 import Button from "@components/ui/button.astro";
 import Link from "@components/ui/link.astro";
 import BaseLayout from "@layouts/base-layout.astro";
+
+const title = "ScreenSnapper - Record";
+const description =
+  "The online tool to record your screen. Where you can record your screen and download the video.";
 ---
 
-<BaseLayout pageTitle="ScreenSnapper - Record">
+<BaseLayout title={title} description={description}>
   <section class="mt-20">
-    <p>
+    <p class="text-lg">
       If you want to read the instructions, click <Link
         href="/instructions"
         class="text-yellow-400 underline underline-offset-4">here</Link
