@@ -1,0 +1,50 @@
+---
+import BaseLayout from "@layouts/base-layout.astro";
+import Link from "@components/ui/link.astro";
+import RecordNowButton from "@components/record-now-button.astro";
+---
+
+<BaseLayout pageTitle="ScreenSnapper - Instructions">
+  <section class="mt-20">
+    <h1 class="text-7xl">Instructions</h1>
+    <p class="text-stone-300 mt-4">Follow these steps to use ScreenSnapper</p>
+    <ol class="mt-4 space-y-4">
+      <li class="flex items-center space-x-4">
+        <span
+          class="h-7 w-7 flex items-center justify-center text-sm shrink-0 bg-yellow-400 flex-none rounded-full text-stone-950"
+        >
+          1
+        </span>
+        <p>
+          Press the "Start recording" button to start recording. The browser
+          will ask you to give permission to use your microphone if you want to
+          record microphone audio.
+        </p>
+      </li>
+      <li class="flex items-start space-x-4">
+        <span
+          class="h-7 w-7 flex items-center justify-center text-sm shrink-0 bg-yellow-400 flex-none rounded-full text-stone-950"
+        >
+          2
+        </span>
+        <p>
+          Click the "Stop recording" button when you want to stop the recording.
+          While the recording is in progress, you will see a live preview of the
+          recording.
+        </p>
+      </li>
+      <li class="flex items-start space-x-4">
+        <span
+          class="h-7 w-7 flex items-center justify-center text-sm shrink-0 bg-yellow-400 flex-none rounded-full text-stone-950"
+        >
+          3
+        </span>
+        <p>
+          Now you will have a full preview of the recording and a button to
+          download the video.
+        </p>
+      </li>
+    </ol>
+    <RecordNowButton />
+  </section>
+</BaseLayout>

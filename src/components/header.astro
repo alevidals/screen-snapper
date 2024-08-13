@@ -1,0 +1,42 @@
+---
+import Link from "@components/ui/link.astro";
+
+const currentPath = Astro.url.pathname;
+
+const links = [
+  {
+    href: "/",
+    text: "Home",
+  },
+  {
+    href: "/record",
+    text: "Record",
+  },
+  {
+    href: "/instructions",
+    text: "Instructions",
+  },
+];
+---
+
+<header
+  class="fixed top-0 right-0 left-0 z-50 h-16 flex items-center justify-between container mx-auto px-4"
+>
+  <a href="/" class="font-bold text-yellow-400">ScreenSnapper</a>
+
+  <nav>
+    <ul class="flex items-center gap-4">
+      {
+        links.map((link) => (
+          <li
+            class:list={
+              currentPath === link.href ? "font-bold text-yellow-400" : ""
+            }
+          >
+            <Link href={link.href}>{link.text}</Link>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</header>

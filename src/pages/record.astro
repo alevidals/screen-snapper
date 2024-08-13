@@ -1,0 +1,132 @@
+---
+import Button from "@components/ui/button.astro";
+import Link from "@components/ui/link.astro";
+import BaseLayout from "@layouts/base-layout.astro";
+---
+
+<BaseLayout pageTitle="ScreenSnapper - Record">
+  <section class="mt-20">
+    <p>
+      If you want to read the instructions, click <Link href="/instructions"
+        >here</Link
+      >.
+    </p>
+    <div class="my-4 flex items-center gap-x-4">
+      <Button id="start-recording">Start recording</Button>
+      <Button id="stop-recording" disabled>Stop recording</Button>
+    </div>
+    <canvas
+      id="video-preview"
+      class="bg-stone-800 max-w-2xl w-full aspect-video hidden"></canvas>
+    <video
+      id="video-container"
+      controls
+      autoplay
+      class="aspect-video max-w-2xl w-full hidden"></video>
+  </section>
+</BaseLayout>
+
+<script>
+  import { MIME_TYPE } from "@src/lib/constants";
+  import { getAudio, getMedia, getStream } from "@src/lib/media";
+
+  const startRecordingButton = document.getElementById(
+    "start-recording"
+  ) as HTMLButtonElement;
+  const stopRecordingButton = document.getElementById(
+    "stop-recording"
+  ) as HTMLButtonElement;
+  const videoPreview = document.getElementById(
+    "video-preview"
+  ) as HTMLCanvasElement;
+  const videoContainer = document.getElementById(
+    "video-container"
+  ) as HTMLVideoElement;
+
+  let animationFrameNumber: number;
+  let videoBlob: Blob;
+  let mediaStream: MediaStream;
+  let audioStream: MediaStream | null;
+  let mediaRecorder: MediaRecorder;
+
+  startRecordingButton.addEventListener("click", handleStartRecording);
+  stopRecordingButton.addEventListener("click", handleStopRecording);
+
+  async function handleStartRecording() {
+    const media = await getMedia();
+    mediaStream = media;
+    const audio = await getAudio();
+    audioStream = audio;
+
+    const { stream, desktopVideoTrack } = getStream(media, audio);
+
+    mediaRecorder = new MediaRecorder(stream, {
+      mimeType: MIME_TYPE,
+    });
+
+    mediaRecorder.start();
+
+    startPreview(desktopVideoTrack);
+
+    desktopVideoTrack.addEventListener("ended", handleVideoTrackEnd);
+
+    mediaRecorder.addEventListener("dataavailable", handleDataAvailable);
+  }
+
+  function handleStopRecording() {
+    mediaStream.getTracks().forEach((track) => track.stop());
+    audioStream?.getTracks().forEach((track) => track.stop());
+
+    handleVideoTrackEnd();
+  }
+
+  function handleDataAvailable(event: BlobEvent) {
+    const { data } = event;
+
+    videoPreview.classList.add("hidden");
+    videoBlob = data;
+    videoContainer.src = URL.createObjectURL(videoBlob);
+    videoContainer.classList.remove("hidden");
+  }
+
+  function startPreview(desktopVideoTrack: MediaStreamTrack) {
+    const previewStream = new MediaStream();
+    previewStream.addTrack(desktopVideoTrack);
+
+    videoPreview.classList.remove("hidden");
+    startRecordingButton.disabled = true;
+
+    startRecordingButton.innerHTML = `
+      Recording... <div class="h-2 w-2 rounded-full bg-red-400 animate-ping" />
+    `;
+
+    stopRecordingButton.disabled = false;
+
+    const video = document.createElement("video");
+    video.classList.add("aspect-video");
+    video.classList.add("w-full");
+    video.autoplay = true;
+    video.srcObject = previewStream;
+    videoPreview.width = 1280;
+    videoPreview.height = 720;
+    const canvasContext = videoPreview.getContext("2d");
+
+    function draw() {
+      animationFrameNumber = window.requestAnimationFrame(draw);
+      canvasContext?.drawImage(video, 0, 0, 1280, 720);
+    }
+
+    video.addEventListener("loadeddata", () => {
+      draw();
+    });
+  }
+
+  function handleVideoTrackEnd() {
+    mediaRecorder.stop();
+    window.cancelAnimationFrame(animationFrameNumber);
+    videoPreview.classList.add("hidden");
+    videoContainer.classList.remove("hidden");
+    startRecordingButton.disabled = false;
+    stopRecordingButton.disabled = true;
+  }
+</script>
