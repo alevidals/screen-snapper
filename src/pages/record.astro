@@ -7,8 +7,9 @@ import BaseLayout from "@layouts/base-layout.astro";
 <BaseLayout pageTitle="ScreenSnapper - Record">
   <section class="mt-20">
     <p>
-      If you want to read the instructions, click <Link href="/instructions"
-        >here</Link
+      If you want to read the instructions, click <Link
+        href="/instructions"
+        class="text-yellow-400 underline underline-offset-4">here</Link
       >.
     </p>
     <div class="my-4 flex items-center gap-x-4">
@@ -23,11 +24,12 @@ import BaseLayout from "@layouts/base-layout.astro";
       controls
       autoplay
       class="aspect-video max-w-2xl w-full hidden"></video>
+    <Button id="download-button" class="hidden mt-4"> Download now </Button>
   </section>
 </BaseLayout>
 
 <script>
-  import { MIME_TYPE } from "@src/lib/constants";
+  import { MIME_TYPE, BUTTONS_HTML } from "@src/lib/constants";
   import { getAudio, getMedia, getStream } from "@src/lib/media";
 
   const startRecordingButton = document.getElementById(
@@ -35,6 +37,9 @@ import BaseLayout from "@layouts/base-layout.astro";
   ) as HTMLButtonElement;
   const stopRecordingButton = document.getElementById(
     "stop-recording"
+  ) as HTMLButtonElement;
+  const downloadButton = document.getElementById(
+    "download-button"
   ) as HTMLButtonElement;
   const videoPreview = document.getElementById(
     "video-preview"
@@ -51,6 +56,7 @@ import BaseLayout from "@layouts/base-layout.astro";
 
   startRecordingButton.addEventListener("click", handleStartRecording);
   stopRecordingButton.addEventListener("click", handleStopRecording);
+  downloadButton.addEventListener("click", handleDownload);
 
   async function handleStartRecording() {
     const media = await getMedia();
@@ -94,11 +100,11 @@ import BaseLayout from "@layouts/base-layout.astro";
     previewStream.addTrack(desktopVideoTrack);
 
     videoPreview.classList.remove("hidden");
+    videoContainer.classList.add("hidden");
+    downloadButton.classList.add("hidden");
     startRecordingButton.disabled = true;
 
-    startRecordingButton.innerHTML = `
-      Recording... <div class="h-2 w-2 rounded-full bg-red-400 animate-ping" />
-    `;
+    startRecordingButton.innerHTML = BUTTONS_HTML.recording;
 
     stopRecordingButton.disabled = false;
 
@@ -128,5 +134,21 @@ import BaseLayout from "@layouts/base-layout.astro";
     videoContainer.classList.remove("hidden");
     startRecordingButton.disabled = false;
     stopRecordingButton.disabled = true;
+    downloadButton.classList.remove("hidden");
+    startRecordingButton.innerHTML = BUTTONS_HTML.startRecording;
+  }
+
+  function handleDownload() {
+    const blob = new Blob([videoBlob], { type: MIME_TYPE });
+
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+
+    a.href = url;
+    a.download = "screen-snap.webm";
+    a.click();
+
+    URL.revokeObjectURL(url);
   }
 </script>

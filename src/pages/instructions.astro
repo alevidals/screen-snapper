@@ -6,10 +6,10 @@ import RecordNowButton from "@components/record-now-button.astro";
 
 <BaseLayout pageTitle="ScreenSnapper - Instructions">
   <section class="mt-20">
-    <h1 class="text-7xl">Instructions</h1>
+    <h1 class="text-5xl md:text-7xl">Instructions</h1>
     <p class="text-stone-300 mt-4">Follow these steps to use ScreenSnapper</p>
     <ol class="mt-4 space-y-4">
-      <li class="flex items-center space-x-4">
+      <li class="flex items-start space-x-4">
         <span
           class="h-7 w-7 flex items-center justify-center text-sm shrink-0 bg-yellow-400 flex-none rounded-full text-stone-950"
         >
@@ -45,6 +45,8 @@ import RecordNowButton from "@components/record-now-button.astro";
         </p>
       </li>
     </ol>
-    <RecordNowButton />
+    <div class="mx-auto w-fit md:mx-0">
+      <RecordNowButton />
+    </div>
   </section>
 </BaseLayout>
