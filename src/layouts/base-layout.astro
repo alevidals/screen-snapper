@@ -1,6 +1,8 @@
 ---
 import "@src/styles.css";
 
+import { BASE_URL } from "astro:env/client";
+
 import Header from "@components/header.astro";
 import Footer from "@components/footer.astro";
 
@@ -17,13 +19,11 @@ type OpenGraph = {
   type: string;
 };
 
-const { origin } = Astro.url;
-
 const { title, description } = Astro.props;
 
 const openGraph: OpenGraph = {
-  url: origin,
-  imageUrl: `${origin}/og.png`,
+  url: BASE_URL,
+  imageUrl: `${BASE_URL}/og.png`,
   width: 1200,
   height: 630,
   type: "website",
