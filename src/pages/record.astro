@@ -9,26 +9,51 @@ const description =
 ---
 
 <BaseLayout title={title} description={description}>
-  <section class="mt-20">
-    <p class="text-lg">
+  <section class="mt-48 max-w-3xl mx-auto">
+    <p class="text-lg text-center">
       If you want to read the instructions, click <Link
         href="/instructions"
-        class="text-yellow-400 underline underline-offset-4">here</Link
+        class="text-red-400 underline underline-offset-4">here</Link
       >.
     </p>
-    <div class="my-4 flex items-center gap-x-4">
-      <Button id="start-recording">Start recording</Button>
-      <Button id="stop-recording" disabled>Stop recording</Button>
+    <div class="my-4 flex items-center gap-x-4 justify-center">
+      <Button id="start-recording" class="h-12 px-8">Start recording</Button>
+      <Button
+        id="stop-recording"
+        class="bg-transparent border-2 h-12 px-8 border-red-400 text-red-400 hover:bg-red-400/80 hover:text-stone-950"
+        disabled>Stop recording</Button
+      >
     </div>
     <canvas
       id="video-preview"
-      class="bg-stone-800 max-w-2xl w-full aspect-video hidden"></canvas>
+      class="bg-stone-800 max-w-2xl w-full aspect-video hidden mx-auto"
+    ></canvas>
     <video
       id="video-container"
       controls
       autoplay
-      class="aspect-video max-w-2xl w-full hidden"></video>
-    <Button id="download-button" class="hidden mt-4"> Download now </Button>
+      class="aspect-video max-w-2xl w-full hidden mx-auto"></video>
+    <div class="mx-auto w-fit">
+      <Button
+        id="download-button"
+        class="mt-4 hidden border-2 bg-transparent h-16 px-8 border-red-400 text-red-400 items-center gap-x-4 hover:bg-red-400/80 hover:text-stone-950"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="stroke-2 scale-90"
+          width="24"
+          height="24"
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          ><path stroke="none" d="M0 0h24v24H0z"></path><path
+            d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2M7 11l5 5 5-5M12 4v12"
+          ></path></svg
+        >
+        Download now
+      </Button>
+    </div>
   </section>
 </BaseLayout>
 
@@ -106,6 +131,7 @@ const description =
     videoPreview.classList.remove("hidden");
     videoContainer.classList.add("hidden");
     downloadButton.classList.add("hidden");
+    downloadButton.classList.remove("flex");
     startRecordingButton.disabled = true;
 
     startRecordingButton.innerHTML = BUTTONS_HTML.recording;
@@ -139,6 +165,7 @@ const description =
     startRecordingButton.disabled = false;
     stopRecordingButton.disabled = true;
     downloadButton.classList.remove("hidden");
+    downloadButton.classList.add("flex");
     startRecordingButton.innerHTML = BUTTONS_HTML.startRecording;
   }
 
