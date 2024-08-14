@@ -15,8 +15,8 @@
 - [🖼️ Screenshots](#️-screenshots)
 - [🌐 Website](#-website)
 - [🚀 Getting Started](#-getting-started)
-  - [Dependencies](#dependencies)
-  - [Installation](#installation)
+  - [📚 Dependencies](#-dependencies)
+  - [⚙️ Installation](#️-installation)
 
 </details>
 
@@ -35,7 +35,7 @@ If you want to see the website, you can visit [ScreenSnapper](https://screen-sna
 
 # 🚀 Getting Started
 
-## Dependencies
+## 📚 Dependencies
 
 > [!IMPORTANT]
 > This project requires **Node.js version 20** or higher.
@@ -45,7 +45,7 @@ If you want to see the website, you can visit [ScreenSnapper](https://screen-sna
 npm install -g pnpm
 ```
 
-## Installation
+## ⚙️ Installation
 
 1. Clone the repository
 
